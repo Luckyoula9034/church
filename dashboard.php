@@ -191,6 +191,24 @@ $totalinventorytypes=$query3->rowCount();
                                         </a>
                                         <!-- /.dashboard-stat -->
                                     </div>
+
+                                     <div class="col-lg-3 col-md-4 col-xs-12" style="padding-top: 30px;">
+                                        <a class="dashboard-stat bg-success" href="mpesa-payments.php">
+                                        <?php 
+$sql3="SELECT SUM(TransAmount)  from  mpesa_payments ";
+$query3 = $dbh -> prepare($sql3);
+$query3->execute();
+$results3=$query3->fetchAll(PDO::FETCH_OBJ);
+$totalresults=$query3->rowCount();
+
+?>
+
+                                            <span class="number counter"><?php echo htmlentities($totalresults);?></span>
+                                            <span class="name">Mpesa Transactions</span>
+                                            <span class="bg-icon"><i class="fa fa-money"></i></span>
+                                        </a>
+                                        <!-- /.dashboard-stat -->
+                                    </div>
                                 </div>
                                 <!-- /.row -->
                             </div>

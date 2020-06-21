@@ -88,6 +88,17 @@
                                         </ul>
                                     </li>
 
+                                    <li class="has-children">
+                                        <a href="#"><i class="fa fa-bar-chart"></i> <span>Finance</span> <i class="fa fa-angle-right arrow"></i></a>
+                                        <ul class="child-nav">                                          
+                                            <li><a href="income.php"><i class="fa fa fa-money"></i> <span>Income</span></a></li>
+                                            <li><a href="income-type.php"><i class="fa fa fa-money"></i> <span>Income Type</span></a></li>
+                                            <li><a href="expenses.php"><i class="fa fa fa-bank"></i> <span>Expenses</span></a></li>
+                                             <li><a href="expense-type.php"><i class="fa fa fa-bank"></i> <span>Expense Type</span></a></li>
+                                            <li><a href="mpesa-payments.php"><i class="fa fa-line-chart"></i> <span>Mpesa Reports</span></a></li>
+                                           
+                                        </ul>
+
                                         <li><a href="change-password.php"><i class="fa fa fa-server"></i> <span> Change Password</span></a></li>
                                            
                                     </li>
