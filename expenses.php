@@ -1,7 +1,9 @@
 <?php
 session_start();
 error_reporting(0);
+$errors = array();
 include('includes/config.php');
+
 if(strlen($_SESSION['alogin'])=="")
     {   
     header("Location: index.php"); 
@@ -9,16 +11,17 @@ if(strlen($_SESSION['alogin'])=="")
     else{
 
 if(isset($_POST['submit']))
+   
 {
-$expense_head=$_POST['expense_typ'];
-$expense_date=$_POST['indate'];  
+$Expense_head=$_POST['Expense_typ'];
+$Expense_date=$_POST['indate'];  
 $Amount=$_POST['amount']; 
 $description=$_POST['description']; 
 $status=1;
-$sql="INSERT INTO  expense(expense_head, expense_date, Amount, description) VALUES(:expense_typ,:indate,:amount,:description)";
+$sql="INSERT INTO  Expense(Expense_head, Expense_date, Amount, description) VALUES(:Expense_typ,:indate,:amount,:description)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':expense_typ',$expense_head,PDO::PARAM_STR);
-$query->bindParam(':indate',$expense_date,PDO::PARAM_STR);
+$query->bindParam(':Expense_typ',$Expense_head,PDO::PARAM_STR);
+$query->bindParam(':indate',$Expense_date,PDO::PARAM_STR);
 $query->bindParam(':amount',$Amount,PDO::PARAM_STR);
 $query->bindParam(':description',$description,PDO::PARAM_STR);
 $query->execute();
@@ -27,21 +30,26 @@ if($lastInsertId)
 {
 $msg="member info added successfully";
 }
-else 
-{
-$error="Something went wrong. Please try again";
+else {
+
+    $new_url = add_query_arg( 'success', 1, get_permalink() );
+    wp_redirect( $new_url, 303 );
+    exit;
 }
 
 }
+
+
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Expenses</title>
+        <title>Expense</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -58,21 +66,24 @@ $error="Something went wrong. Please try again";
         <script src="js/modernizr/modernizr.min.js"></script>
           <style>
         .errorWrap {
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #dd3d36;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
-.succWrap{
-    padding: 10px;
-    margin: 0 0 20px 0;
-    background: #fff;
-    border-left: 4px solid #5cb85c;
-    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-}
+            padding: 10px;
+            margin: 0 0 20px 0;
+            background: #fff;
+            border-left: 4px solid #dd3d36;
+            -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+        }
+        .succWrap{
+            padding: 10px;
+            margin: 0 0 20px 0;
+            background: #fff;
+            border-left: 4px solid #5cb85c;
+            -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+        }
+        .navbar{
+            margin-bottom: 0px;
+        }
         </style>
     </head>
     <body>
@@ -90,23 +101,21 @@ $error="Something went wrong. Please try again";
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2 style="color: white;"><b>Expenses</b></h2>
+                        <h2 style="color: white;"><b>Expense</b></h2>
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Expense</span></a>
-                        <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>                        
+                       <!--  <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a> -->                        
                     </div>
                 </div>
             </div>
-            <table id="example" class="display table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>
-                            <span class="custom-checkbox">
-                                <input type="checkbox" id="selectAll">
-                                <label for="selectAll"></label>
-                            </span>
-                        </th>
+                                            <div class="panel-body p-20">
+                                                <form method="post">
+                                                <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                             </th>
                         <th>Expense type</th>
                         <th>Amount</th>
                         <th>Date</th>
@@ -114,8 +123,18 @@ $error="Something went wrong. Please try again";
                         <th>Actions</th>
                     </tr>
                 </thead>
+                <tfoot>
+                                                        <tr>
+                                                          <th>#</th>
+                                                             <th>Expense type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>
                 <tbody>
-                    <?php $sql = "SELECT expense_head, expense_date, Amount, description FROM expense";
+                    <?php $sql = "SELECT * from expense ORDER BY id DESC";
 
     $query = $dbh->prepare($sql);
     $query->execute();
@@ -127,23 +146,20 @@ $error="Something went wrong. Please try again";
     {   
 ?>
 <tr>
- <!-- <td><?php echo htmlentities($cnt);?></td> -->
-                                <td>
-                            <span class="custom-checkbox">
-                                <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                <label for="checkbox1"></label>
-                            </span>
-                        </td>
-                                                            <td><?php echo htmlentities($result->expense_head);?></td>
+                                <td><?php echo htmlentities($cnt);?></td>
+                               <td><?php echo htmlentities($result->expense_head);?></td>
                                                              <td><?php echo htmlentities($result->Amount);?></td>
                                                             <td><?php echo htmlentities($result->expense_date);?></td>
                                                            
                                                             <td><?php echo htmlentities($result->description);?></td>
-                                                  
-<td>
-<a href="edit-result.php?stid=<?php echo htmlentities($result->StudentId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 
-</td>
+<td scope="row">
+<a href="edit-expense.php?expenseid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a>  
+<button type="button" class="DelMe btn btn-danger btn-sm fa fa-times " data-id="<?php echo htmlentities($result->id); ?>" onclick="window.alert('Are you sure you want to delete this?')" ></button>
+
+
+</form> 
+ 
 </tr>
 <?php $cnt=$cnt+1;}} ?>
                 </tbody>
@@ -162,8 +178,8 @@ $error="Something went wrong. Please try again";
                     <div class="modal-body">                    
                         
                         <div class="form-group">
-                            <select name="expense_typ" class="form-control" id="expense_typ" required="required">
-                                                        <option value="">Select expense type</option>
+                            <select name="Expense_typ" class="form-control" id="Expense_typ" required="required">
+                                                        <option value="">Select Expense type</option>
                                                         <?php $sql = "SELECT * from expense_type";
 $query = $dbh->prepare($sql);
 $query->execute();
@@ -172,8 +188,8 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {   ?>
-                                                        <option value="<?php echo htmlentities($result->id); ?>">
-                                                            <?php echo htmlentities($result->expense_head); ?>
+                                                        <option value="<?php echo htmlentities($result->Expense_head); ?>">
+                                                            <?php echo htmlentities($result->Expense_head); ?>
                                                         </option>
                                                         <?php }} ?>
                                                     </select>
@@ -233,7 +249,9 @@ foreach($results as $result)
             </div>
         </div>
     </div>
-    <!-- Delete Modal HTML -->
+   
+
+
     <div id="deleteEmployeeModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -284,34 +302,7 @@ foreach($results as $result)
 
         </script>
 </body>
-<script type="text/javascript">
-    
-    $(document).ready(function(){
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
-    
-    // Select/Deselect checkboxes
-    var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function(){
-        if(this.checked){
-            checkbox.each(function(){
-                this.checked = true;                        
-            });
-        } else{
-            checkbox.each(function(){
-                this.checked = false;                        
-            });
-        } 
-    });
-    checkbox.click(function(){
-        if(!this.checked){
-            $("#selectAll").prop("checked", false);
-        }
-    });
-});
-
-</script>
-        <!-- ========== COMMON JS FILES ========== -->
+       <!-- ========== COMMON JS FILES ========== -->
         <script src="js/jquery/jquery-2.2.4.min.js"></script>
         <script src="js/bootstrap/bootstrap.min.js"></script>
         <script src="js/pace/pace.min.js"></script>
@@ -336,11 +327,50 @@ foreach($results as $result)
 
                 $('#example3').DataTable();
             });
+            //Deleting Expense rows using delete-row.php
+            $(document).ready(function(){
+       
+        $(".DelMe").on('click', function(){
+             var $button = $(this);
+            var DelId =$(this).data('id');       
+            var dataString = 'DelId='+ DelId;
+                $.ajax({
+                async: false,
+                type: "POST",
+                url: "delete-expense.php",
+                data: dataString,
+                cache: false,
+                success: function(callback)
+        {
+            location.reload();
+            table.row( $button.parents('tr') ).remove().draw();
+        },
+        error: function(status)
+        {
+            console.log(status);
+        }
+
+
+            });
+        });
+});
+//Avoiding resubmissions after reload
+            if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
         </script>
 
 
     
 </html>
-<?php } ?>
+<?php
+if (isset($_GET['del'])) {
+ print_r($Expenseid);   
+$sid=intval($_GET['Expenseid']);
+$sql = "DELETE from Expense where id=:sid";
+$query = $dbh->prepare($sql);
+$query->bindParam(':sid',$sid,PDO::PARAM_STR);
+$query->execute();
+} } ?>
 
      

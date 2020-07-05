@@ -103,7 +103,7 @@ $totalassembly=$query2->rowCount();
                                         <!-- /.dashboard-stat -->
                                     </div>
                                     <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                   <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <a class="dashboard-stat bg-danger" href="manage-member.php">
 <?php 
 $sql ="SELECT id from  members where Status=0 ";
@@ -119,7 +119,7 @@ $totalmembers=$query->rowCount();
                                         <!-- /.dashboard-stat -->
                                     </div>
                                     <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="col-lg-3 col-md-4 col-xs-12" style="padding-top: 30px;2">
                                         <a class="dashboard-stat bg-danger" href="manage-newborn.php">
 <?php 
 $sql ="SELECT id from  newborns ";
@@ -137,7 +137,7 @@ $totalnewborns=$query->rowCount();
                                     <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
 
 
-                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <div class="col-lg-3 col-md-4 col-xs-12" style="padding-top: 30px;">
                                         <a class="dashboard-stat bg-success" href="manage-eulogy.php">
                                         <?php 
 $sql3="SELECT  distinct memberId from  membersummary ";
@@ -156,7 +156,7 @@ $totalmembersummary=$query3->rowCount();
 
 
 
-                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <div class="col-lg-3 col-md-4 col-xs-12" style="padding-top: 30px;">
                                         <a class="dashboard-stat bg-success" href="manage-inventory.php">
                                         <?php 
 $sql3="SELECT  distinct id from  inventory where Status=1";
@@ -175,7 +175,7 @@ $totalinventory=$query3->rowCount();
                                     <!-- /.col-lg-3 col-md-3 col-sm-6 col-xs-12 -->
 
 
-                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <div class="col-lg-3 col-md-4 col-xs-12" style="padding-top: 30px;">
                                         <a class="dashboard-stat bg-success" href="manage-inventorytypes.php">
                                         <?php 
 $sql3="SELECT  distinct id from  inventorytypes ";
@@ -209,13 +209,13 @@ $totalresults=$query3->rowCount();
                                         </a>
                                         <!-- /.dashboard-stat -->
                                     </div>
-                                </div>
+                                    
                                 <!-- /.row -->
                             </div>
                             <!-- /.container-fluid -->
                         </section>
                         <!-- /.section -->
-
+                        
                     </div>
                     <!-- /.main-page -->
 

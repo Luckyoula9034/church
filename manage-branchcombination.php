@@ -8,30 +8,30 @@ if(strlen($_SESSION['alogin'])=="")
     header("Location: index.php"); 
     }
     else{
- // for activate Subject   	
-if(isset($_GET['submit']))
+ // for activate Subject    
+if(isset($_GET['acid']))
 {
-$id=intval($_GET['id']);
+$acid=intval($_GET['acid']);
 $status=1;
-$sql="update branchcombination set status=:status where id=:id ";
+$sql="update branchcombination set status=:status where id=:acid ";
 $query = $dbh->prepare($sql);
-$query->bindParam(':id',$id,PDO::PARAM_STR);
+$query->bindParam(':acid',$acid,PDO::PARAM_STR);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->execute();
-$msg="branchcombination Activated successfully";
+$msg="Branch Activate successfully";
 }
 
  // for Deactivate Subject
-if(isset($_GET['id']))
+if(isset($_GET['did']))
 {
-$id=intval($_GET['id']);
+$did=intval($_GET['did']);
 $status=0;
-$sql="update branchcombination set status=:status where id=:id ";
+$sql="update branchcombination set status=:status where id=:did ";
 $query = $dbh->prepare($sql);
-$query->bindParam(':id',$did,PDO::PARAM_STR);
+$query->bindParam(':did',$did,PDO::PARAM_STR);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->execute();
-$msg="branchcombination Deactivated successfully";
+$msg="Branch Deactivate successfully";
 }
 ?>
 <!DOCTYPE html>
@@ -39,8 +39,8 @@ $msg="branchcombination Deactivated successfully";
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Admin Manage branch Combination</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Admin Manage Branch Combination</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -82,7 +82,7 @@ $msg="branchcombination Deactivated successfully";
                         <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">Manage branch Combination</h2>
+                                    <h2 class="title">Manage Branch Combination</h2>
                                 
                                 </div>
                                 
@@ -92,10 +92,10 @@ $msg="branchcombination Deactivated successfully";
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
-            							<li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
-                                        <li> Branch combinations</li>
-            							<li class="active">Manage branch Combination</li>
-            						</ul>
+                                        <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
+                                        <li> Branch</li>
+                                        <li class="active">Manage Branch Combination</li>
+                                    </ul>
                                 </div>
                              
                             </div>
@@ -114,7 +114,7 @@ $msg="branchcombination Deactivated successfully";
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>View branch Combination Info</h5>
+                                                    <h5>View Branch Combination Info</h5>
                                                 </div>
                                             </div>
 <?php if($msg){?>
@@ -132,23 +132,23 @@ else if($error){?>
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>assembly and location</th>
-                                                            <th>branch </th>
+                                                            <th>Assembly and Location</th>
+                                                            <th>Branch </th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
-                                                          <th>#</th>
-                                                            <th>assembly and location</th>
-                                                            <th>branch </th>
+                                                            <th>#</th>
+                                                            <th>Assembly and Location</th>
+                                                            <th>Branch </th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT assembly.name,assembly.location,branch.branchName,branchcombination.id as baid,branchcombination.status from branchcombination join assembly on assembly.id=branchcombination.id.assemblyId  join branch on branch.id=branchcombination.branchId";
+<?php $sql = "SELECT assembly.name,assembly.location,branch.branchName,branchcombination.id as scid,branchcombination.status from branchcombination join assembly on assembly.id=branchcombination.assemblyId  join branch on branch.id=branchcombination.branchId";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -160,25 +160,24 @@ foreach($results as $result)
 <tr>
  <td><?php echo htmlentities($cnt);?></td>
                                                             <td><?php echo htmlentities($result->name);?> &nbsp; location-<?php echo htmlentities($result->location);?></td>
-                                                            <td><?php echo htmlentities($result->baid);?></td>
+                                                            <td><?php echo htmlentities($result->branchName);?></td>
                                                              <td><?php $stts=$result->status;
-
 if($stts=='0')
 {
-	echo htmlentities('Inactive');
+    echo htmlentities('Inactive');
 }
 else
 {
-	echo htmlentities('Active');
+    echo htmlentities('Active');
 }
                                                              ?></td>
                                                             
 <td>
 <?php if($stts=='0')
 { ?>
-<a href="manage-branchcombination.php?baid=<?php echo htmlentities($result->baid);?>" onclick="confirm('do you really want to ativate this branch');"><i class="fa fa-check" title="Acticvate Record"></i> </a><?php } else {?>
+<a href="manage-branchcombination.php?acid=<?php echo htmlentities($result->scid);?>" onclick="confirm('do you really want to ativate this branch');"><i class="fa fa-check" title="Acticvate Record"></i> </a><?php } else {?>
 
-<a href="manage-branchcombination.php?baid=<?php echo htmlentities($result->baid);?>" onclick="confirm('do you really want to deativate this branch');"><i class="fa fa-times" title="Deactivate Record"></i> </a>
+<a href="manage-branchcombination.php?did=<?php echo htmlentities($result->scid);?>" onclick="confirm('do you really want to deativate this branch');"><i class="fa fa-times" title="Deactivate Record"></i> </a>
 <?php }?>
 </td>
 </tr>

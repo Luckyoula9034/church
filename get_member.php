@@ -5,12 +5,12 @@ if(!empty($_POST["classid"]))
  $cid=intval($_POST['classid']);
  if(!is_numeric($cid)){
  
- 	echo htmlentities("invalid assembly");exit;
+ 	echo htmlentities("invalid Assembly");exit;
  }
  else{
  $stmt = $dbh->prepare("SELECT memberName,id FROM members WHERE assemblyId= :id order by memberName");
  $stmt->execute(array(':id' => $cid));
- ?><option value="">Select Category </option><?php
+ ?><option value="">Select Name </option><?php
  while($row=$stmt->fetch(PDO::FETCH_ASSOC))
  {
   ?>
@@ -35,7 +35,7 @@ if(!empty($_POST["classid1"]))
  
  while($row=$stmt->fetch(PDO::FETCH_ASSOC))
  {?>
-  <p> <?php echo htmlentities($row['branchName']); ?><input type="text"  name="age[]" value="" class="form-control" required="" placeholder="Enter age out of 100" autocomplete="off"></p>
+  <p> <?php echo htmlentities($row['branchName']); ?><input type="text"  name="age[]" value="" class="form-control" required="" placeholder="Enter age" autocomplete="off"></p>
   
 <?php  }
 }

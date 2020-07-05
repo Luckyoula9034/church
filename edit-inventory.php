@@ -12,20 +12,25 @@ $stid=intval($_GET['stid']);
 
 if(isset($_POST['submit']))
 {
-$description=$_POST['fullanme'];
-$memberInvolved=$_POST['rollid']; 
-$cost=$_POST['emailid']; 
+$studentname=$_POST['fullanme'];
+$roolid=$_POST['rollid']; 
+$studentemail=$_POST['emailid']; 
+$cost=$_POST['cost']; 
+$classid=$_POST['class']; 
+$regdate=$_POST['regdate']; 
 $status=$_POST['status'];
-$sql="update inventory set description=:studentname,memberInvolved=:roolid,cost=:studentemail,Status=:status where id=:stid ";
+$sql="update inventory set description=:studentname,memberInvolved=:roolid,cost=:cost,RegDate=:regdate,Status=:status where id=:stid ";
 $query = $dbh->prepare($sql);
-$query->bindParam(':studentname',$description,PDO::PARAM_STR);
-$query->bindParam(':roolid',$memberInvolved,PDO::PARAM_STR);
-$query->bindParam(':studentemail',$cost,PDO::PARAM_STR);
+$query->bindParam(':studentname',$studentname,PDO::PARAM_STR);
+$query->bindParam(':roolid',$roolid,PDO::PARAM_STR);
+$query->bindParam(':studentemail',$studentemail,PDO::PARAM_STR);
+$query->bindParam(':cost',$cost,PDO::PARAM_STR);
+$query->bindParam(':regdate',$regdate,PDO::PARAM_STR);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->bindParam(':stid',$id,PDO::PARAM_STR);
+$query->bindParam(':stid',$stid,PDO::PARAM_STR);
 $query->execute();
 
-$msg="inventory info updated successfully";
+$msg="Inventory updated successfully";
 }
 
 
@@ -35,7 +40,7 @@ $msg="inventory info updated successfully";
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>church Admin| Edit inventory < </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
@@ -64,7 +69,7 @@ $msg="inventory info updated successfully";
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">inventory update</h2>
+                                    <h2 class="title">inventory updation</h2>
                                 
                                 </div>
                                 
@@ -76,7 +81,7 @@ $msg="inventory info updated successfully";
                                     <ul class="breadcrumb">
                                         <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
                                 
-                                        <li class="active">inventory update</li>
+                                        <li class="active">inventory updation</li>
                                     </ul>
                                 </div>
                              
@@ -90,7 +95,7 @@ $msg="inventory info updated successfully";
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>update inventory details</h5>
+                                                    <h5>Edit the inventory info</h5>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
@@ -106,7 +111,7 @@ else if($error){?>
                                                 <form class="form-horizontal" method="post">
 <?php 
 
-$sql = "SELECT inventory.description,inventory.memberInvolved,inventory.cost,inventory.RegDate,inventory.Status from inventory where inventory.id=:stid";
+$sql = "SELECT inventory.description,inventory.memberInvolved,inventory.cost,inventory.RegDate,inventory.id,inventory.Status,inventorytypes.description,inventorytypes.status from inventory join inventorytypes on inventorytypes.id=inventory.id where inventory.id=:stid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':stid',$stid,PDO::PARAM_STR);
 $query->execute();
@@ -126,19 +131,19 @@ foreach($results as $result)
 </div>
 
 <div class="form-group">
-<label for="default" class="col-sm-2 control-label">Member involved</label>
+<label for="default" class="col-sm-2 control-label">Member Involved</label>
 <div class="col-sm-10">
-<input type="text" name="rollid" class="form-control" id="rollid" value="<?php echo htmlentities($result->memberInvolved)?>" maxlength="5" required="required" autocomplete="off">
+<input type="text" name="rollid" class="form-control" id="rollid" value="<?php echo htmlentities($result->memberInvolved)?>" maxlength="100" required="required" autocomplete="off">
 </div>
 </div>
 
 <div class="form-group">
 <label for="default" class="col-sm-2 control-label">Cost</label>
 <div class="col-sm-10">
-<input type="email" name="emailid" class="form-control" id="emailid" value="<?php echo htmlentities($result->cost)?>" required="required" autocomplete="off">
+<input type="text" name="cost" class="form-control" id="cost" value="<?php echo htmlentities($result->cost)?>" required="required" autocomplete="off">
 </div>
 </div>
-                                            
+
 <div class="form-group">
 <label for="default" class="col-sm-2 control-label">Status</label>
 <div class="col-sm-10">
@@ -146,13 +151,13 @@ foreach($results as $result)
 if($stats=="1")
 {
 ?>
-<input type="radio" name="status" value="1" required="required" checked>Active <input type="radio" name="status" value="0" required="required">Dormant
+<input type="radio" name="status" value="1" required="required" checked>Active <input type="radio" name="status" value="0" required="required">Inactive
 <?php }?>
 <?php  
 if($stats=="0")
 {
 ?>
-<input type="radio" name="status" value="1" required="required" >Active <input type="radio" name="status" value="0" required="required" checked>Dormant
+<input type="radio" name="status" value="1" required="required" >Active <input type="radio" name="status" value="0" required="required" checked>Inactive
 <?php }?>
 
 

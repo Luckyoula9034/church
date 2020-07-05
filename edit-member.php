@@ -12,25 +12,25 @@ $stid=intval($_GET['stid']);
 
 if(isset($_POST['submit']))
 {
-$memberName=$_POST['fullname'];
-$idNo=$_POST['idNo']; 
-$memberEmail=$_POST['emailid']; 
-$Gender=$_POST['gender']; 
-$assemblyId=$_POST['assembly']; 
-$DOB=$_POST['dob']; 
-$Status=$_POST['status'];
-$sql="update members set memberName=:fullname,IdNo=:idNo,memberEmail=:memberemail,Gender=:gender,DOB=:dob,Status=:status where memberId=:stid ";
+$studentname=$_POST['fullanme'];
+$roolid=$_POST['rollid']; 
+$studentemail=$_POST['emailid']; 
+$gender=$_POST['gender']; 
+$classid=$_POST['class']; 
+$dob=$_POST['dob']; 
+$status=$_POST['status'];
+$sql="update members set memberName=:studentname,IdNo=:roolid,memberEmail=:studentemail,Gender=:gender,DOB=:dob,Status=:status where id=:stid ";
 $query = $dbh->prepare($sql);
-$query->bindParam(':membername',$memberName,PDO::PARAM_STR);
-$query->bindParam(':idNo',$idNo,PDO::PARAM_STR);
-$query->bindParam(':memberemail',$memberEmail,PDO::PARAM_STR);
-$query->bindParam(':gender',$Gender,PDO::PARAM_STR);
-$query->bindParam(':dob',$DOB,PDO::PARAM_STR);
-$query->bindParam(':status',$Status,PDO::PARAM_STR);
+$query->bindParam(':studentname',$studentname,PDO::PARAM_STR);
+$query->bindParam(':roolid',$roolid,PDO::PARAM_STR);
+$query->bindParam(':studentemail',$studentemail,PDO::PARAM_STR);
+$query->bindParam(':gender',$gender,PDO::PARAM_STR);
+$query->bindParam(':dob',$dob,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->bindParam(':stid',$stid,PDO::PARAM_STR);
 $query->execute();
 
-$msg="members info updated successfully";
+$msg="Member info updated successfully";
 }
 
 
@@ -40,8 +40,8 @@ $msg="members info updated successfully";
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin| Edit members < </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>church Admin| Edit member < </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -69,7 +69,7 @@ $msg="members info updated successfully";
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">member registration</h2>
+                                    <h2 class="title">Member updation</h2>
                                 
                                 </div>
                                 
@@ -81,7 +81,7 @@ $msg="members info updated successfully";
                                     <ul class="breadcrumb">
                                         <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
                                 
-                                        <li class="active">member registration</li>
+                                        <li class="active">Member updation</li>
                                     </ul>
                                 </div>
                              
@@ -95,7 +95,7 @@ $msg="members info updated successfully";
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>Fill the member info</h5>
+                                                    <h5>Edit the members info</h5>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
@@ -111,7 +111,7 @@ else if($error){?>
                                                 <form class="form-horizontal" method="post">
 <?php 
 
-$sql = "SELECT members.memberName,members.IdNo,members.RegDate,members.memberId,members.Status,members.memberEmail,members.Gender,members.DOB,assembly.name,assembly.location from members join assembly on assembly.id=members.assemblyId where members.memberId=:stid";
+$sql = "SELECT members.memberName,members.IdNo,members.RegDate,members.id,members.Status,members.memberEmail,members.Gender,members.DOB,assembly.name,assembly.location from members join assembly on assembly.id=members.assemblyId where members.id=:stid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':stid',$stid,PDO::PARAM_STR);
 $query->execute();
@@ -119,28 +119,28 @@ $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
 if($query->rowCount() > 0)
 {
-foreach($results as $eulogy)
+foreach($results as $result)
 {  ?>
 
 
 <div class="form-group">
 <label for="default" class="col-sm-2 control-label">Full Name</label>
 <div class="col-sm-10">
-<input type="text" name="fullname" class="form-control" id="idNo" value="<?php echo htmlentities($eulogy->memberName)?>" required="required" autocomplete="off">
+<input type="text" name="fullanme" class="form-control" id="fullanme" value="<?php echo htmlentities($result->memberName)?>" required="required" autocomplete="off">
 </div>
 </div>
 
 <div class="form-group">
-<label for="default" class="col-sm-2 control-label"> IdNo</label>
+<label for="default" class="col-sm-2 control-label">ADM NO</label>
 <div class="col-sm-10">
-<input type="text" name="idNo" class="form-control" id="idNo" value="<?php echo htmlentities($eulogy->IdNo)?>" maxlength="5" required="required" autocomplete="off">
+<input type="text" name="rollid" class="form-control" id="rollid" value="<?php echo htmlentities($result->IdNo)?>" maxlength="10" required="required" autocomplete="off">
 </div>
 </div>
 
 <div class="form-group">
-<label for="default" class="col-sm-2 control-label">Email id)</label>
+<label for="default" class="col-sm-2 control-label">Email</label>
 <div class="col-sm-10">
-<input type="email" name="emailid" class="form-control" id="email" value="<?php echo htmlentities($eulogy->memberEmail)?>" required="required" autocomplete="off">
+<input type="email" name="emailid" class="form-control" id="email" value="<?php echo htmlentities($result->memberEmail)?>" required="required" autocomplete="off">
 </div>
 </div>
 
@@ -149,7 +149,7 @@ foreach($results as $eulogy)
 <div class="form-group">
 <label for="default" class="col-sm-2 control-label">Gender</label>
 <div class="col-sm-10">
-<?php  $gndr=$eulogy->Gender;
+<?php  $gndr=$result->Gender;
 if($gndr=="Male")
 {
 ?>
@@ -175,15 +175,15 @@ if($gndr=="Other")
 
 
                                                     <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">assembly</label>
+                                                        <label for="default" class="col-sm-2 control-label">Assembly</label>
                                                         <div class="col-sm-10">
-<input type="text" name="name" class="form-control" id="idNo" value="<?php echo htmlentities($eulogy->name)?>(<?php echo htmlentities($eulogy->location)?>)" readonly>
+<input type="text" name="classname" class="form-control" id="classname" value="<?php echo htmlentities($result->name)?>(<?php echo htmlentities($result->location)?>)" readonly>
                                                         </div>
                                                     </div>
 <div class="form-group">
                                                         <label for="date" class="col-sm-2 control-label">DOB</label>
                                                         <div class="col-sm-10">
-                <input type="date"  name="dob" class="form-control" value="<?php echo htmlentities($eulogy->DOB)?>" id="date">
+                <input type="date"  name="dob" class="form-control" value="<?php echo htmlentities($result->DOB)?>" id="date">
                                                         </div>
                                                     </div>
 <div class="form-group">
@@ -196,17 +196,17 @@ if($gndr=="Other")
 <div class="form-group">
 <label for="default" class="col-sm-2 control-label">Status</label>
 <div class="col-sm-10">
-<?php  $stats=$eulogy->Status;
+<?php  $stats=$result->Status;
 if($stats=="1")
 {
 ?>
-<input type="radio" name="status" value="1" required="required" checked>live <input type="radio" name="status" value="0" required="required">dead 
+<input type="radio" name="status" value="1" required="required" checked>Live <input type="radio" name="status" value="0" required="required">Dead
 <?php }?>
 <?php  
 if($stats=="0")
 {
 ?>
-<input type="radio" name="status" value="1" required="required" >live <input type="radio" name="status" value="0" required="required" checked>dead 
+<input type="radio" name="status" value="1" required="required" >Live <input type="radio" name="status" value="0" required="required" checked>Dead
 <?php }?>
 
 

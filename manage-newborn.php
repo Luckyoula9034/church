@@ -132,7 +132,7 @@ else if($error){?>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT newborns.newbornName,newborns.notificationNo,newborns.Gender,newborns.DOB,newborns.RegDate,newborns.id,newborns.Status,assembly.name,assembly.location from newborns join assembly on assembly.id=newborns.assemblyId where Status=1";
+<?php $sql = "SELECT newborns.newbornName,newborns.notificationNo,newborns.Gender,newborns.DOB,newborns.RegDate,newborns.id,newborns.Status,assembly.name,assembly.location from newborns join assembly on assembly.id=newborns.assemblyId";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -157,8 +157,7 @@ else{
 }
                                                                 ?></td>
 <td>
-<a href="edit-newborn.php?id=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
-
+<a href="edit-newborn.php?stid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 </td>
 </tr>
 <?php $cnt=$cnt+1;}} ?>

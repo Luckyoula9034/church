@@ -31,7 +31,7 @@ include('includes/config.php');?><!DOCTYPE html>
                                    <div class="form-group mt-20">
                                         <div class="">
                                       
-                                            <a href="login-members.php"> <button type="submit" class="btn btn-success btn-labeled pull-right">Members<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button></a>
+                                            <a href="find-eulogy.php"> <button type="submit" class="btn btn-success btn-labeled pull-right">Members<span class="btn-label btn-label-right"><i class="fa fa-check"></i></span></button></a>
                                             <div class="clearfix"></div>
                                         </div>
                                     </div>

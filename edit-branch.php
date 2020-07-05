@@ -12,7 +12,7 @@ if(isset($_POST['Update']))
 $sid=intval($_GET['branchid']);
 $branchname=$_POST['branchname'];
 $branchcode=$_POST['branchcode']; 
-$sql="update  branch set branchName=:branchname,branchCode=:branchcode where id=:sid";
+$sql="update branch set branchName=:branchname,branchCode=:branchcode where id=:sid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':branchname',$branchname,PDO::PARAM_STR);
 $query->bindParam(':branchcode',$branchcode,PDO::PARAM_STR);
@@ -129,7 +129,6 @@ foreach($results as $eulogy)
                                                         </div>
                                                     </div>
                                                 </form>
-
                                             </div>
                                         </div>
                                     </div>

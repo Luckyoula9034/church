@@ -8,22 +8,22 @@ if(strlen($_SESSION['alogin'])=="")
     }
     else{
 
-$stid=intval($_GET['submit']);
+$stid=intval($_GET['stid']);
 if(isset($_POST['submit']))
 {
 
 $rowid=$_POST['id'];
-$age=$_POST['age']; 
+$marks=$_POST['marks']; 
 
 foreach($_POST['id'] as $count => $id){
-$age=$age[$count];
-$id=$id[$count];
+$mrks=$marks[$count];
+$iid=$rowid[$count];
 for($i=0;$i<=$count;$i++) {
 
-$sql="update eulogy  set age=:age where id=:id ";
+$sql="update membersummary  set age=:mrks where id=:iid ";
 $query = $dbh->prepare($sql);
-$query->bindParam(':age',$age,PDO::PARAM_STR);
-$query->bindParam(':id',$id,PDO::PARAM_STR);
+$query->bindParam(':mrks',$mrks,PDO::PARAM_STR);
+$query->bindParam(':iid',$iid,PDO::PARAM_STR);
 $query->execute();
 
 $msg="member info updated successfully";
@@ -37,8 +37,8 @@ $msg="member info updated successfully";
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin|  members info < </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>church Admin|  member summary info < </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -66,7 +66,7 @@ $msg="member info updated successfully";
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">members Info</h2>
+                                    <h2 class="title">Member summary Info</h2>
                                 
                                 </div>
                                 
@@ -78,7 +78,7 @@ $msg="member info updated successfully";
                                     <ul class="breadcrumb">
                                         <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
                                 
-                                        <li class="active">members Info</li>
+                                        <li class="active">summary Info</li>
                                     </ul>
                                 </div>
                              
@@ -92,7 +92,7 @@ $msg="member info updated successfully";
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>Update the members info</h5>
+                                                    <h5>Update the member info</h5>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
@@ -109,7 +109,7 @@ else if($error){?>
 
 <?php 
 
-$ret = "SELECT members.memberName,assembly.name,assembly.location from eulogy join members on eulogy.memberId=eulogy.memberId join branch on branch.id=eulogy.branchId join assembly on assembly.id=members.assemblyId where members.memberId=:stid limit 1";
+$ret = "SELECT members.memberName,assembly.name,assembly.location from membersummary join members on membersummary.memberId=membersummary.memberId join branch on branch.id=membersummary.branchId join assembly on assembly.id=members.assemblyId where members.id=:stid limit 1";
 $stmt = $dbh->prepare($ret);
 $stmt->bindParam(':stid',$stid,PDO::PARAM_STR);
 $stmt->execute();
@@ -122,7 +122,7 @@ foreach($result as $row)
 
 
                                                     <div class="form-group">
-                                            <label for="default" class="col-sm-2 control-label">assembly</label>
+                                            <label for="default" class="col-sm-2 control-label">Assembly</label>
                                                         <div class="col-sm-10">
 <?php echo htmlentities($row->name)?>(<?php echo htmlentities($row->location)?>)
                                                         </div>
@@ -138,7 +138,7 @@ foreach($result as $row)
 
 
 <?php 
-$sql = "SELECT distinct members.memberName,members.memberId,assembly.name,assembly.location,branch.branchName,eulogy.age,eulogy.id as eulogyid from eulogy join members on members.memberId=eulogy.memberId join branch on branch.id=eulogy.branchId join assembly on assembly.id=members.assemblyId where members.memberId=:stid ";
+$sql = "SELECT distinct members.memberName,members.id,assembly.name,assembly.location,branch.branchName,membersummary.age,membersummary.id as resultid from membersummary join members on members.id=membersummary.memberId join branch on branch.id=membersummary.branchId join assembly on assembly.id=members.assemblyId where members.id=:stid ";
 $query = $dbh->prepare($sql);
 $query->bindParam(':stid',$stid,PDO::PARAM_STR);
 $query->execute();
@@ -146,16 +146,16 @@ $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
 if($query->rowCount() > 0)
 {
-foreach($results as $eulogy)
+foreach($results as $result)
 {  ?>
 
 
 
 <div class="form-group">
-<label for="default" class="col-sm-2 control-label"><?php echo htmlentities($eulogy->branchName)?></label>
+<label for="default" class="col-sm-2 control-label"><?php echo htmlentities($result->branchName)?></label>
 <div class="col-sm-10">
-<input type="hidden" name="id[]" value="<?php echo htmlentities($eulogy->id)?>">
-<input type="text" name="age[]" class="form-control" id="age" value="<?php echo htmlentities($eulogy->age)?>" maxlength="5" required="required" autocomplete="off">
+<input type="hidden" name="id[]" value="<?php echo htmlentities($result->resultid)?>">
+<input type="text" name="marks[]" class="form-control" id="marks" value="<?php echo htmlentities($result->age)?>" maxlength="5" required="required" autocomplete="off">
 </div>
 </div>
 

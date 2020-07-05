@@ -101,8 +101,6 @@ else if($error){?>
                                                             <th>Amount.</th>
                                                             <th>Date</th>
                                                             <th>Ref No.</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
@@ -112,8 +110,8 @@ else if($error){?>
                                                             <th>Amount.</th>
                                                             <th>Date</th>
                                                             <th>Ref No.</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
+                                                            
+                                                           
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
@@ -134,17 +132,7 @@ else if($error){?>
                                                             <td><?php echo htmlentities($result->TransAmount);?></td>
                                                             <td><?php echo htmlentities($result->OrgAccountBalance);?></td>
                                                             <td><?php echo htmlentities($result->RegDate);?></td>
-                                                             <td><?php if($result->Status==1){
-echo htmlentities('Active');
-}
-else{
-   echo htmlentities('Blocked'); 
-}
-                                                                ?></td>
-<td>
-<a href="edit-result.php?stid=<?php echo htmlentities($result->StudentId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
-
-</td>
+                                                             
 </tr>
 <?php $cnt=$cnt+1;}} ?>
                                                        
@@ -202,19 +190,21 @@ else{
 
         <!-- ========== THEME JS ========== -->
         <script src="js/main.js"></script>
-        <script>
-            $(function($) {
-                $('#example').DataTable();
-
-                $('#example2').DataTable( {
-                    "scrollY":        "300px",
-                    "scrollCollapse": true,
-                    "paging":         false
-                } );
-
-                $('#example3').DataTable();
-            });
+        <script type="text/javascript">
+            $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'print'
+        ]
+    } );
+} );
         </script>
+        
     </body>
 </html>
 <?php } ?>

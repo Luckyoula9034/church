@@ -109,6 +109,22 @@ else {
                     </div>
                 </div>
             </div>
+               <!-- <div class="table-responsive">
+    <br />
+    <div class="row">
+     <div class="input-daterange">
+      <div class="col-md-4">
+       <input type="text" name="start_date" id="start_date" class="form-control" />
+      </div>
+      <div class="col-md-4">
+       <input type="text" name="end_date" id="end_date" class="form-control" />
+      </div>      
+     </div>
+     <div class="col-md-4">
+      <input type="button" name="search" id="search" value="Search" class="btn btn-info" />
+     </div>
+    </div> -->
+   
                                             <div class="panel-body p-20">
                                                 <form method="post">
                                                 <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
@@ -120,7 +136,7 @@ else {
                         <th>Amount</th>
                         <th>Date</th>
                         <th>Description</th>
-                        <th>Actions</th>
+                        
                     </tr>
                 </thead>
                 <tfoot>
@@ -130,7 +146,7 @@ else {
                         <th>Amount</th>
                         <th>Date</th>
                         <th>Description</th>
-                        <th>Actions</th>
+                        
                                                         </tr>
                                                     </tfoot>
                 <tbody>
@@ -155,9 +171,7 @@ else {
                                                             <td><?php echo htmlentities($result->description);?></td>
                                                   
 
-<td scope="row">
-<a href="edit-income.php?incomeid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a>  
-<button type="button" class="DelMe btn btn-danger btn-sm fa fa-times " data-id="<?php echo htmlentities($result->id); ?>" onclick="window.alert('Are you sure you want to delete this?')" ></button>
+
 
 
 </form> 
@@ -314,53 +328,56 @@ foreach($results as $result)
         <!-- ========== PAGE JS FILES ========== -->
         <script src="js/prism/prism.js"></script>
         <script src="js/DataTables/datatables.min.js"></script>
+        <script src="js/DataTables/range_dates.js"></script>
+          <script src="js/DataTables/searchPanes.js"></script>
 
         <!-- ========== THEME JS ========== -->
         <script src="js/main.js"></script>
         <script>
-            $(function($) {
-                $('#example').DataTable();
-
-                $('#example2').DataTable( {
-                    "scrollY":        "300px",
-                    "scrollCollapse": true,
-                    "paging":         false
-                } );
-
-                $('#example3').DataTable();
-            });
-            //Deleting income rows using delete-row.php
-            $(document).ready(function(){
-       
-        $(".DelMe").on('click', function(){
-             var $button = $(this);
-            var DelId =$(this).data('id');       
-            var dataString = 'DelId='+ DelId;
-                $.ajax({
-                async: false,
-                type: "POST",
-                url: "delete-row.php",
-                data: dataString,
-                cache: false,
-                success: function(callback)
-        {
-            location.reload();
-            table.row( $button.parents('tr') ).remove().draw();
-        },
-        error: function(status)
-        {
-            console.log(status);
-        }
-
-
-            });
-        });
-});
+        $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            'print'
+        ]
+    } );
+} );
+          
 //Avoiding resubmissions after reload
             if ( window.history.replaceState ) {
   window.history.replaceState( null, null, window.location.href );
 }
-        </script>
+$(document).ready(function() {
+    $('#example').DataTable( {
+        searchPanes:{
+            panes: [
+                {
+                    header:'Custom',
+                    options:[
+                        {
+                            label:'Accountants from Tokyo',
+                            value: function(rowData, rowIdx){
+                                return rowData[1] === 'Accountant' && rowData[2] === 'Tokyo';
+                            }
+                        }
+                    ],
+                    dtOpts:{
+                        searching: false,
+                        order: [[1, 'desc']]
+                    }
+                }
+            ],
+            layout: 'columns-4',
+        },
+        dom: 'Pfrtip',
+    });
+});
+
+</script>   
 
 
     

@@ -56,7 +56,7 @@ $rollid=$_POST['rollid'];
 $classid=$_POST['class'];
 $_SESSION['rollid']=$rollid;
 $_SESSION['classid']=$classid;
-$qery = "SELECT   members.memberName,members.memberEmail,members.DOB,members.Gender,members.IdNo,members.RegDate,members.id,members.Status,assembly.name,assembly.location from members join assembly on assembly.id=members.assemblyId where members.IdNo=:rollid and members.id=:classid ";
+$qery = "SELECT   newborns.newbornName,newborns.fatherEmail,newborns.DOB,newborns.Gender,newborns.notificationNo,newborns.RegDate,newborns.id,newborns.Status,assembly.name,assembly.location from newborns join assembly on assembly.id=newborns.assemblyId where newborns.notificationNo=:rollid and newborns.id=:classid ";
 $stmt = $dbh->prepare($qery);
 $stmt->bindParam(':rollid',$rollid,PDO::PARAM_STR);
 $stmt->bindParam(':classid',$classid,PDO::PARAM_STR);
@@ -67,19 +67,19 @@ if($stmt->rowCount() > 0)
 {
 foreach($resultss as $row)
 {   ?>
-<p><b>Member Name :</b> <?php echo htmlentities($row->memberName);?></p>
-<p><b>Member ID NO :</b> <?php echo htmlentities($row->IdNo);?>
+<p><b>Newborn Name :</b> <?php echo htmlentities($row->newbornName);?></p>
+<p><b>Newborn Notification NO :</b> <?php echo htmlentities($row->notificationNo);?>
 <p><b>Registration Time:</b> <?php echo htmlentities($row->RegDate);?>
 <p><b>Gender:</b> <?php echo htmlentities($row->Gender);?>
 <p><b>Date of Birth:</b> <?php echo htmlentities($row->DOB);?>
-<p><b>Member EMAIL:</b> <?php echo htmlentities($row->memberEmail);?>
-<p><b>Member Assembly:</b> <?php echo htmlentities($row->name);?>(<?php echo htmlentities($row->location);?>)
+<p><b>Father Email:</b> <?php echo htmlentities($row->fatherEmail);?>
+<p><b>Newborn Assembly:</b> <?php echo htmlentities($row->name);?>(<?php echo htmlentities($row->location);?>)
 <?php }
 
     ?>
                                             </div>
                                                             <div class="col-sm-6">
-                                                               <a href="index.php">Back to Home</a>
+                                                               <a href="dashboard.php">Back to Home</a>
                                                             </div>
                                             <div class="panel-body p-20">
                                                     

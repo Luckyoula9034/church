@@ -147,7 +147,7 @@ foreach($results as $result)
                                                             <td><?php echo htmlentities($result->UpdationDate);?></td>
                                                             <td><?php echo htmlentities($result->Status);?></td>
 <td>
-<a href="edit-inventory.php?id=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<a href="edit-inventory.php?stid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 
 </td>
 </tr>

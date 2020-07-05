@@ -26,7 +26,7 @@ if(strlen($_SESSION['alogin'])=="")
         <link rel="stylesheet" href="css/main.css" media="screen" >
         <script src="js/modernizr/modernizr.min.js"></script>
           <style>
-        .errorWrap {
+.errorWrap {
     padding: 10px;
     margin: 0 0 20px 0;
     background: #fff;
@@ -42,6 +42,7 @@ if(strlen($_SESSION['alogin'])=="")
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
 }
+}
         </style>
     </head>
     <body class="top-navbar-fixed">
@@ -53,64 +54,32 @@ if(strlen($_SESSION['alogin'])=="")
             <div class="content-wrapper">
                 <div class="content-container">
 <?php include('includes/leftbar.php');?>  
-
-                    <div class="main-page">
-                        <div class="container-fluid">
-                            <div class="row page-title-div">
-                                <div class="col-md-6">
-                                    <h2 class="title">Manage members</h2>
-                                
-                                </div>
-                                
-                                <!-- /.col-md-6 text-right -->
-                            </div>
-                            <!-- /.row -->
-                            <div class="row breadcrumb-div">
-                                <div class="col-md-6">
-                                    <ul class="breadcrumb">
-            							<li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
-                                        <li> members</li>
-            							<li class="active">Manage members</li>
-            						</ul>
-                                </div>
-                             
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.container-fluid -->
-
-                        <section class="section">
-                            <div class="container-fluid">
-
-                             
-
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                        <div class="panel">
-                                            <div class="panel-heading">
-                                                <div class="panel-title">
-                                                    <h5>View members Info</h5>
-                                                </div>
-                                            </div>
-<?php if($msg){?>
-<div class="alert alert-success left-icon-alert" role="alert">
- <strong>Well done!</strong><?php echo htmlentities($msg); ?>
- </div><?php } 
-else if($error){?>
-    <div class="alert alert-danger left-icon-alert" role="alert">
-                                            <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
-                                        </div>
-                                        <?php } ?>
-                                            <div class="panel-body p-20">
-
-                                                <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
+<div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 style="color: white;"><b>Members</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#add-member" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New member</span></a>
+                        <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>                        
+                    </div>
+                </div>
+            </div>
+            <table id="example" class="display table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="custom-checkbox">
+                                <input type="checkbox" id="selectAll">
+                                <label for="selectAll"></label>
+                            </span>
+                        </th>
                                                             <th>member Name</th>
                                                             <th>IdNo</th>
                                                             <th>assembly</th>
+                                                             <th>Gender</th>
                                                             <th>Reg Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
@@ -118,17 +87,18 @@ else if($error){?>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
-                                                          <th>#</th>
+                                                          <th></th>
                                                             <th>member Name</th>
                                                             <th>IdNo</th>
                                                             <th>assembly</th>
+                                                            <th>Gender</th>
                                                             <th>Reg Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT members.memberName,members.idNo,members.RegDate,members.id,members.Status,assembly.name,assembly.location from members join assembly on assembly.id=members.assemblyId where Status=1";
+<?php $sql = "SELECT members.memberName,members.idNo,members.RegDate,members.id,members.Gender,members.Status,assembly.name,assembly.location from members join assembly on assembly.id=members.assemblyId ";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -138,10 +108,17 @@ if($query->rowCount() > 0)
 foreach($results as $result)
 {   ?>
 <tr>
- <td><?php echo htmlentities($cnt);?></td>
+  <!-- <td><?php echo htmlentities($cnt);?></td> -->
+                                <td>
+                            <span class="custom-checkbox">
+                                <input type="checkbox" id="checkbox1" name="options[]" value="1">
+                                <label for="checkbox1"></label>
+                            </span>
+                        </td>
                                                             <td><?php echo htmlentities($result->memberName);?></td>
                                                             <td><?php echo htmlentities($result->idNo);?></td>
                                                             <td><?php echo htmlentities($result->name);?>(<?php echo htmlentities($result->location);?>)</td>
+                                                            <td><?php echo htmlentities($result->Gender);?></td>
                                                             <td><?php echo htmlentities($result->RegDate);?></td>
                                                              <td><?php if($result->Status==1){
 echo htmlentities('Live');
@@ -151,7 +128,7 @@ else{
 }
                                                                 ?></td>
 <td>
-<a href="edit-member.php?stid=<?php echo htmlentities($result->memberId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<a href="edit-member.php?stid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 
 </td>
 </tr>

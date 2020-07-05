@@ -24,7 +24,9 @@ $msg="Income Type added successfully";
 }
 else 
 {
-$error="Something went wrong. Please try again";
+  $new_url = add_query_arg( 'success', 1, get_permalink() );
+    wp_redirect( $new_url, 303 );
+    exit;
 }
 
 }
@@ -118,7 +120,7 @@ $error="Something went wrong. Please try again";
 
 
                                 <div class="panel-body p-20">
-
+                                                <form method="post">
                                                 <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
@@ -139,7 +141,7 @@ $error="Something went wrong. Please try again";
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT income_head, descr FROM income_type";
+<?php $sql = "SELECT * FROM income_type";
 
     $query = $dbh->prepare($sql);
     $query->execute();
@@ -152,21 +154,23 @@ $error="Something went wrong. Please try again";
 ?>
 <tr>
  <td><?php echo htmlentities($cnt);?></td>
-                                                            <td contenteditable='true'><?php echo htmlentities($result->income_head);?></td>
-                                                             <td contenteditable='true'><?php echo htmlentities($result->descr);?></td>
+                                                            <td><?php echo htmlentities($result->income_head);?></td>
+                                                             <td><?php echo htmlentities($result->descr);?></td>
                                                   
-<td>
-<a href="edit-result.php?stid=<?php echo htmlentities($result->StudentId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<td scope="row">
+<a href="edit-income-type.php?incometypeid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<button type="button" class="DelMe btn btn-danger btn-sm fa fa-times " data-id="<?php echo htmlentities($result->id);?>" onclick="window.alert('Are you sure you want to delete this?')" ></button>
 
 </td>
 </tr>
+
 <?php $cnt=$cnt+1;}} ?>
                                                        
                                                     
                                                     </tbody>
                                                 </table>
 
-                                         
+                                         </form>
                                                 <!-- /.col-md-12 -->
                                             </div>
                             </div>
@@ -188,25 +192,50 @@ $error="Something went wrong. Please try again";
         <script src="js/select2/select2.min.js"></script>
         <script src="js/main.js"></script>
         <script>
+      
             $(function($) {
-                $(".js-states").select2();
-                $(".js-states-limit").select2({
-                    maximumSelectionLength: 2
-                });
-                $(".js-states-hide").select2({
-                    minimumResultsForSearch: Infinity
-                });
+                $('#example').DataTable();
+
+                $('#example2').DataTable( {
+                    "scrollY":        "300px",
+                    "scrollCollapse": true,
+                    "paging":         false
+                } );
+
+                $('#example3').DataTable();
             });
+            //Deleting income rows using delete-row.php
+            $(document).ready(function(){
 
-            $(document).ready(function() {
-        $('#example').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-                'print'
-            ]
-        } );
-    } );
+        $(".DelMe").on('click', function(){
+             var $button = $(this);
+            var DelId =$(this).data('id');       
+            var dataString = 'DelId='+ DelId;
+                $.ajax({
+                async: false,
+                type: "POST",
+                url: "delete-income-category.php",
+                data: dataString,
+                cache: false,
+                success: function(callback)
+        {
+            location.reload();
+            table.row( $button.parents('tr') ).remove().draw();
+        },
+        error: function(status)
+        {
+            console.log(status);
+        }
 
+
+            });
+        });
+});
+//Avoiding resubmissions after reload
+            if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+        
         </script>
 </body>
 

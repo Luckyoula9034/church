@@ -24,7 +24,9 @@ $msg="expense Type added successfully";
 }
 else 
 {
-$error="Something went wrong. Please try again";
+ $new_url = add_query_arg( 'success', 1, get_permalink() );
+    wp_redirect( $new_url, 303 );
+    exit;
 }
 
 }
@@ -36,7 +38,7 @@ $error="Something went wrong. Please try again";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>expense Type</title>
+    <title>Expense Type</title>
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="css/font-awesome.min.css" media="screen">
     <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen">
@@ -65,7 +67,7 @@ $error="Something went wrong. Please try again";
                     <div class="container-fluid">
                         <div class="row page-title-div">
                             <div class="col-md-6">
-                                <h2 class="title">expense Type</h2>
+                                <h2 class="title">Expense Type</h2>
 
                             </div>
 
@@ -77,7 +79,7 @@ $error="Something went wrong. Please try again";
                                 <ul class="breadcrumb">
                                     <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
 
-                                    <li class="active">expense Type</li>
+                                    <li class="active">Expense Type</li>
                                 </ul>
                             </div>
 
@@ -94,7 +96,7 @@ $error="Something went wrong. Please try again";
                                         <form class="form-horizontal" method="post">
 
                                             <div class="form-group">
-                                                <label for="default" class="col-sm-2 control-label">expense Type</label>
+                                                <label for="default" class="col-sm-2 control-label">Expense Type</label>
                                                 <div class="col-sm-10">
                                                     <input type="text" name="expensetype" class="form-control" id="expensetype" required="required" autocomplete="off">
                                                 </div>
@@ -118,30 +120,30 @@ $error="Something went wrong. Please try again";
 
 
                                 <div class="panel-body p-20">
-
+                                            <form method="post">
                                                 <table id="example" class="display table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>expense Type</th>
+                                                            <th>Expense Type</th>
                                                             <th>Description</th>
                                                             <th>Action</th>
-                                                            <th>Delete</th>
+                                                          
                                                             
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
                                                             <th>#</th>
-                                                            <th>expense Type</th>
+                                                            <th>Expense Type</th>
                                                             <th>Description</th>
                                                             <th>Action</th>
-                                                            <th>Delete</th>
+                                                           
                                                             
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT expense_head, descr FROM expense_type";
+<?php $sql = "SELECT * FROM expense_type";
 
     $query = $dbh->prepare($sql);
     $query->execute();
@@ -157,9 +159,9 @@ $error="Something went wrong. Please try again";
                                                             <td contenteditable='true'><?php echo htmlentities($result->expense_head);?></td>
                                                              <td contenteditable='true'><?php echo htmlentities($result->descr);?></td>
                                                   
-<td>
-<a href="edit-result.php?stid=<?php echo htmlentities($result->StudentId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
-
+<td scope="row">
+<a href="edit-expense-type.php?expensetypeid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<button type="button" class="DelMe btn btn-danger btn-sm fa fa-times " data-id="<?php echo htmlentities($result->id);?>" onclick="window.alert('Are you sure you want to delete this?')" ></button>
 </td>
 <td></td>
 </tr>
@@ -168,6 +170,7 @@ $error="Something went wrong. Please try again";
                                                     
                                                     </tbody>
                                                 </table>
+                                                </form>
 
                                          
                                                 <!-- /.col-md-12 -->
@@ -191,24 +194,38 @@ $error="Something went wrong. Please try again";
         <script src="js/select2/select2.min.js"></script>
         <script src="js/main.js"></script>
         <script>
-            $(function($) {
-                $(".js-states").select2();
-                $(".js-states-limit").select2({
-                    maximumSelectionLength: 2
-                });
-                $(".js-states-hide").select2({
-                    minimumResultsForSearch: Infinity
-                });
-            });
+    //Deleting income rows using delete-row.php
+            $(document).ready(function(){
 
-            $(document).ready(function() {
-        $('#example').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-                'print'
-            ]
-        } );
-    } );
+        $(".DelMe").on('click', function(){
+             var $button = $(this);
+            var DelId =$(this).data('id');       
+            var dataString = 'DelId='+ DelId;
+                $.ajax({
+                async: false,
+                type: "POST",
+                url: "delete-expense-category.php",
+                data: dataString,
+                cache: false,
+                success: function(callback)
+        {
+            location.reload();
+            table.row( $button.parents('tr') ).remove().draw();
+        },
+        error: function(status)
+        {
+            console.log(status);
+        }
+
+
+            });
+        });
+});
+//Avoiding resubmissions after reload
+            if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+        
 
         </script>
 </body>

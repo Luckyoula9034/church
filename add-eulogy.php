@@ -173,7 +173,7 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 {   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->assemblyName); ?>&nbsp; location-<?php echo htmlentities($result->location); ?></option>
+<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->name); ?>&nbsp; location-<?php echo htmlentities($result->location); ?></option>
 <?php }} ?>
  </select>
                                                         </div>
@@ -181,7 +181,7 @@ foreach($results as $result)
 <div class="form-group">
                                                         <label for="date" class="col-sm-2 control-label ">Member Name</label>
                                                         <div class="col-sm-10">
-                                                    <select name="studentid" class="form-control stid" id="studentid" required="required" onChange="getresult(this.value);">
+                                                    <select name="studentid" class="form-control stid" id="studentid" required="required" onChange="geteulogy(this.value);">
                                                     </select>
                                                         </div>
                                                     </div>

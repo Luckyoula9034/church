@@ -275,7 +275,7 @@ th {
     display: none;
   }
   .btn > .caret,
-  .dropup > .btn > .caret {
+  .dropup > .btn > .caret, .DelMe {
     border-top-color: #000 !important;
   }
   .label {

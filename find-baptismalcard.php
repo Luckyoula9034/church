@@ -31,10 +31,10 @@ include('includes/config.php');?><!DOCTYPE html>
 
                            
 
-                                <form action="eulogy.php" method="post">
+                                <form action="baptismalcard.php" method="post">
                                     <div class="form-group">
-                                        <label for="rollid">ENTER YOUR ID NO</label>
-                                        <input required type="text" class="form-control" id="rollid" placeholder="ENTER YOUR ID NO" autocomplete="off" name="rollid">
+                                        <label for="rollid">ENTER YOUR NOTIFICATION NO</label>
+                                        <input required type="text" class="form-control" id="rollid" placeholder="Enter your notification no" autocomplete="off" name="rollid">
                                     </div>
                                <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Assembly</label>

@@ -111,6 +111,7 @@ else if($error){?>
                                                             <th>member Name</th>
                                                             <th>IdNo</th>
                                                             <th>assembly</th>
+                                                            <th>Age</th>
                                                             <th>Reg Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
@@ -122,13 +123,14 @@ else if($error){?>
                                                             <th>member Name</th>
                                                             <th>IdNo</th>
                                                             <th>assembly</th>
+                                                            <th>Age</th>
                                                             <th>Reg Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT  distinct members.memberName,members.IdNo,members.RegDate,members.id,members.Status,assembly.name,assembly.location from membersummary join members on members.id=membersummary.memberId  join assembly on assembly.id=membersummary.assemblyId where Status=1";
+<?php $sql = "SELECT  distinct members.memberName,members.IdNo,members.RegDate,members.id,membersummary.age,members.Status,assembly.name,assembly.location from membersummary join members on members.id=membersummary.memberId  join assembly on assembly.id=membersummary.assemblyId";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -142,6 +144,7 @@ foreach($results as $result)
                                                             <td><?php echo htmlentities($result->memberName);?></td>
                                                             <td><?php echo htmlentities($result->IdNo);?></td>
                                                             <td><?php echo htmlentities($result->name);?>(<?php echo htmlentities($result->location);?>)</td>
+                                                            <td><?php echo htmlentities($result->age);?></td>
                                                             <td><?php echo htmlentities($result->RegDate);?></td>
                                                              <td><?php if($result->Status==1){
 echo htmlentities('Live');
@@ -151,7 +154,7 @@ else{
 }
                                                                 ?></td>
 <td>
-<a href="edit-eulogy.php?id=<?php echo htmlentities($result->memberId);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<a href="edit-eulogy.php?stid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 
 </td>
 </tr>

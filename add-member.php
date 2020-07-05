@@ -9,18 +9,18 @@ if(strlen($_SESSION['alogin'])=="")
     else{
 if(isset($_POST['submit']))
 {
-$memberName=$_POST['fullanme'];
-$IdNo=$_POST['rollid']; 
-$memberEmail=$_POST['emailid']; 
+$newbornName=$_POST['fullanme'];
+$notificationNo=$_POST['rollid']; 
+$fatherEmail=$_POST['emailid']; 
 $Gender=$_POST['gender']; 
 $assemblyId=$_POST['class']; 
 $dob=$_POST['dob']; 
 $Status=1;
 $sql="INSERT INTO  members(memberName,IdNo,memberEmail,Gender,assemblyId,DOB,Status) VALUES(:studentname,:roolid,:studentemail,:gender,:classid,:dob,:status)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':studentname',$memberName,PDO::PARAM_STR);
-$query->bindParam(':roolid',$IdNo,PDO::PARAM_STR);
-$query->bindParam(':studentemail',$memberEmail,PDO::PARAM_STR);
+$query->bindParam(':studentname',$newbornName,PDO::PARAM_STR);
+$query->bindParam(':roolid',$notificationNo,PDO::PARAM_STR);
+$query->bindParam(':studentemail',$fatherEmail,PDO::PARAM_STR);
 $query->bindParam(':gender',$Gender,PDO::PARAM_STR);
 $query->bindParam(':classid',$assemblyId,PDO::PARAM_STR);
 $query->bindParam(':dob',$dob,PDO::PARAM_STR);
@@ -29,7 +29,7 @@ $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-$msg="member info added successfully";
+$msg="members info added successfully";
 }
 else 
 {
@@ -45,7 +45,7 @@ $error="Something went wrong. Please try again";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SMS Admin| newborn registration </title>
+    <title>Church Admin| member registration </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
     <link rel="stylesheet" href="css/font-awesome.min.css" media="screen">
     <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen">
@@ -74,7 +74,7 @@ $error="Something went wrong. Please try again";
                     <div class="container-fluid">
                         <div class="row page-title-div">
                             <div class="col-md-6">
-                                <h2 class="title">member registration</h2>
+                                <h2 class="title">Member registration</h2>
 
                             </div>
 
@@ -86,7 +86,7 @@ $error="Something went wrong. Please try again";
                                 <ul class="breadcrumb">
                                     <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
 
-                                    <li class="active">member registration</li>
+                                    <li class="active">Member registration</li>
                                 </ul>
                             </div>
 
@@ -100,7 +100,7 @@ $error="Something went wrong. Please try again";
                                 <div class="panel">
                                     <div class="panel-heading">
                                         <div class="panel-title">
-                                            <h5>Fill the member's info</h5>
+                                            <h5>Fill the members info</h5>
                                         </div>
                                     </div>
                                     <div class="panel-body">
@@ -126,14 +126,14 @@ else if($error){?>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="default" class="col-sm-2 control-label">ID NO</label>
+                                                <label for="default" class="col-sm-2 control-label">ID/PHONE NO</label>
                                                 <div class="col-sm-5">
                                                     <input type="text" name="rollid" class="form-control" id="rollid" maxlength="10" required="required" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="default" class="col-sm-2 control-label">Email</label>
+                                                <label for="default" class="col-sm-2 control-label">Member Email</label>
                                                 <div class="col-sm-5">
                                                     <input type="email" name="emailid" class="form-control" id="email" required="required" autocomplete="off">
                                                 </div>

@@ -3,7 +3,9 @@
 define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','root');
-define('DB_NAME','kanisa');
+define('DB_NAME','drive');
+define('BASE_URL', 'localhost/drive/church/church');
+
 // Establish database connection.
 try
 {

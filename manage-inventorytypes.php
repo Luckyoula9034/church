@@ -8,14 +8,15 @@ if(strlen($_SESSION['alogin'])=="")
     header("Location: index.php"); 
     }
     else{
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Admin Manage inventory types</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Admin Manage Expenses</title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -57,7 +58,7 @@ if(strlen($_SESSION['alogin'])=="")
                         <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">Manage inventory types</h2>
+                                    <h2 class="title">Manage expenses</h2>
                                 
                                 </div>
                                 
@@ -67,10 +68,10 @@ if(strlen($_SESSION['alogin'])=="")
                             <div class="row breadcrumb-div">
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
-            							<li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
-                                        <li> inventory types</li>
-            							<li class="active">Manage inventory types</li>
-            						</ul>
+                                        <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
+                                        <li> deaths</li>
+                                        <li class="active">Manage expenses</li>
+                                    </ul>
                                 </div>
                              
                             </div>
@@ -89,7 +90,7 @@ if(strlen($_SESSION['alogin'])=="")
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>View inventory types Info</h5>
+                                                    <h5>View expenses Info</h5>
                                                 </div>
                                             </div>
 <?php if($msg){?>
@@ -108,22 +109,26 @@ else if($error){?>
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Description</th>
-                                                            <th>date created</th>
+                                                            <th>Reg Date</th>
+                                                            <th>Member Involved</th>
+                                                            <th>Cost</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
-                                                          <th>#</th>
-                                                             <th>Description</th>
-                                                             <th>date created</th>
+                                                            <th>#</th>
+                                                            <th>Description</th>
+                                                            <th>Reg Date</th>
+                                                            <th>Member Involved</th>
+                                                            <th>Cost</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-<?php $sql = "SELECT * from inventorytypes where status=1";
+<?php $sql = "SELECT inventorytypes.description,inventorytypes.RegDate,inventorytypes.id,inventorytypes.status,inventory.description,inventory.memberInvolved,inventory.Status,inventory.cost from inventorytypes join inventory on inventory.id=inventorytypes.id";
 $query = $dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -135,10 +140,20 @@ foreach($results as $result)
 <tr>
  <td><?php echo htmlentities($cnt);?></td>
                                                             <td><?php echo htmlentities($result->description);?></td>
-                                                             <td><?php echo htmlentities($result->dateCreated);?></td>
-                                                            <td><?php echo htmlentities($result->status);?></td>
+                                                            <td><?php echo htmlentities($result->RegDate);?></td>
+                                                            <td><?php echo htmlentities($result->memberInvolved);?></td>
+                                                            <td><?php echo htmlentities($result->cost);?></td>
+                                                            <td><?php echo htmlentities($result->Status);?></td>
+                                                            <td><?php echo htmlentities($result->RegDate);?></td>
+                                                             <td><?php if($result->Status==1){
+echo htmlentities('Live');
+}
+else{
+   echo htmlentities('Dead'); 
+}
+                                                                ?></td>
 <td>
-<a href="edit-inventorytypes.php?id=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
+<a href="edit-inventorytypes.php?stid=<?php echo htmlentities($result->id);?>"><i class="fa fa-edit" title="Edit Record"></i> </a> 
 
 </td>
 </tr>
